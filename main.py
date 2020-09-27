@@ -25,7 +25,7 @@ def get_data() -> list:
         with open(constant.PATH + names, newline = '', encoding = constant.ENCODING) as csvfile:
             reader = csv.reader(csvfile)
             next(reader)
-            messageGroup = list(np.array(list(reader)[:500])[:,4])
+            messageGroup = list(np.array(list(reader)[:800])[:,4])
             messageGroups.append(messageGroup)
 
     for messageGroup in messageGroups :
@@ -92,11 +92,23 @@ def get_tfidf_data(messages):
     data = convert_tfids_to_data(tfidfs)
     return data
 
+def get_confusion_matrix_and_accuracy(labels_pred, labels_test):
+    correct_pred = 0
+    matrix = np.zeros((13,13), int)
+    for i in range(len(labels_pred)):
+        matrix[labels_pred[i]][labels_test[i]] += 1
+        if labels_pred[i] == labels_test[i]:
+            correct_pred += 1
+    return matrix, correct_pred / float(len(labels_pred))
+
 (messages, labels) = get_data()
 data = get_tfidf_data(messages)
 data_train, data_test, labels_train, labels_test = train_test_split(data, labels, test_size=0.2, random_state=0)
 rc = RidgeClassifier(tol=1e-2, solver="sag")
 rc.fit(data_train, labels_train)
 labels_pred = rc.predict(data_test)
+matrix, accuracy = get_confusion_matrix_and_accuracy(labels_pred, labels_test)
 cr = classification_report(labels_test, labels_pred)
+print(matrix)
+print(f'accuracy = {accuracy}')
 print(cr)

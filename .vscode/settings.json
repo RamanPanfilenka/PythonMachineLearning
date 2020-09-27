@@ -2,5 +2,6 @@
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.linting.pylamaEnabled": false,
-    "python.linting.pycodestyleEnabled": false
+    "python.linting.pycodestyleEnabled": false,
+    "python.pythonPath": "C:\\Users\\Raman_Panfilenka\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
 }
